@@ -1,4 +1,4 @@
-const myLibrary = [];
+let myLibrary = [];
 
 function Book(title, author, pages, read) {
     this.title = title;
@@ -14,9 +14,9 @@ function addBookToLibrary(title, author, pages, read) {
     myLibrary.push(book);
 }
 
-addBookToLibrary("Chigga Life", "Yelarys", "202", "Not READ")
-addBookToLibrary("LA Life", "DJ", "222", "READ")
-addBookToLibrary("nUH UH Life", "Insane", "212", "Not READ")
+addBookToLibrary("Life", "Yelarys", "202", "read")
+addBookToLibrary("Washington", "DJ", "222", "not read")
+
 
 
 
@@ -29,6 +29,7 @@ function displayBooks(){
     booksContainer.innerHTML = '';
     myLibrary.forEach(book => {
         const card = document.createElement("div");
+        card.setAttribute('data-id', book.id);
 
         const titleElement = document.createElement('h2');
         titleElement.textContent = book.title;
@@ -44,11 +45,30 @@ function displayBooks(){
 
         const readElement = document.createElement('p');
         readElement.textContent = `Status: ${book.read}`;
+
+        if (book.read === 'read') {
+            readElement.style.color = '#28a745'; // Green
+        } else {
+            readElement.style.color = '#dc3545'; // Red
+        }
+
         card.appendChild(readElement);
 
-        if (booksContainer) {
-            booksContainer.appendChild(card);
-        } 
+        const delButton = document.createElement("button");
+        delButton.textContent = "Remove Book";
+        delButton.setAttribute('data-id', book.id);
+        delButton.style.backgroundColor = '#dc3545';
+
+        delButton.addEventListener("click", () => {
+            const id_bookToDel = delButton.getAttribute("data-id");
+            myLibrary = myLibrary.filter(book => book.id !== id_bookToDel);
+            displayBooks();
+        })
+
+        card.appendChild(delButton);
+        
+        booksContainer.appendChild(card);
+
     })
 }
 
