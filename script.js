@@ -6,6 +6,15 @@ function Book(title, author, pages, read) {
     this.pages = pages;
     this.read = read;
     this.id = crypto.randomUUID();
+
+    this.toggleStatus = function(){
+        if (this.read == "read"){
+            this.read = "not read";
+        }
+        else{
+            this.read = "read";
+        }
+    }
 }
 
 function addBookToLibrary(title, author, pages, read) {
@@ -66,9 +75,27 @@ function displayBooks(){
         })
 
         card.appendChild(delButton);
+
+
+        const statusBtn = document.createElement("button");
+        statusBtn.setAttribute('data-id', book.id);
+        statusBtn.textContent = "Change Status";
+        statusBtn.style.marginLeft = "50px";
+        statusBtn.style.backgroundColor = "lightblue";
+
+        statusBtn.addEventListener('click', () => {
+            const id_statusBtn = statusBtn.getAttribute("data-id");
+            for (const book of myLibrary){
+                if (book.id == id_statusBtn){
+                    book.toggleStatus();
+                }
+            }
+            displayBooks();
+        });
+
+        card.appendChild(statusBtn);
         
         booksContainer.appendChild(card);
-
     })
 }
 
